@@ -26,6 +26,13 @@
 const uint32_t WDT_RETURN_BYTE=256;
 const uint32_t WDT_RETURN_WORD=65536;
 
+union ENTROPY_LONG_WORD 
+{
+  uint32_t int32;
+  uint16_t int16[2];
+  uint8_t int8[4];
+};
+
 class EntropyClass
 {
 public:
@@ -35,6 +42,7 @@ public:
   uint32_t random(uint32_t min, uint32_t max);
   uint8_t available(void);
  private:
+  ENTROPY_LONG_WORD share_entropy;
   uint32_t retVal;
   uint8_t random8(void);
   uint16_t random16(void);

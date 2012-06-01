@@ -14,7 +14,7 @@ Entropy	KEYWORD1
 
 random	KEYWORD2
 available	KEYWORD2
-
+Initialize	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
