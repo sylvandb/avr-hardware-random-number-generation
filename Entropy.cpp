@@ -32,10 +32,10 @@ volatile uint8_t gWDT_pool_end;
 volatile uint8_t gWDT_pool_count;
 volatile uint32_t gWDT_entropy_pool[WDT_POOL_SIZE];
 
-// This function initializes the global variables needed to implement the circular entropy pool and
-// the buffer that holds the raw Timer 1 values that are used to create the entropy pool.  It then
-// Initializes the Watch Dog Timer (WDT) to perform an interrupt every 2048 clock cycles, (about 
-// 16 ms) which is as fast as it can be set.
+// This function initializes the global variables needed to implement the circular entropy 
+// pool and the buffer that holds the raw Timer 1 values that are used to create the entropy
+// pool.  It then Initializes the Watch Dog Timer (WDT) to perform an interrupt every 2048
+// clock cycles, (about 16 ms) which is as fast as it can be set.
 void EntropyClass::Initialize(void)
 {
   gWDT_buffer_position=0;
@@ -43,9 +43,12 @@ void EntropyClass::Initialize(void)
   gWDT_pool_end = 0;
   gWDT_pool_count = 0;
   cli();                         // Temporarily turn off interrupts, until WDT configured
-  MCUSR = 0;                     // Use the MCU status register to reset flags for WDR, BOR, EXTR, and POWR
-  WDTCSR |= _BV(WDCE) | _BV(WDE);// WDT control register, This sets the Watchdog Change Enable (WDCE) flag, which is  needed to set the 
-  WDTCSR = _BV(WDIE);            // Watchdog system reset (WDE) enable and the Watchdog interrupt enable (WDIE)
+  MCUSR = 0;                     // Use the MCU status register to reset flags for WDR, BOR,
+                                 //   EXTR, and POWR
+  WDTCSR |= _BV(WDCE) | _BV(WDE);// WDT control register, This sets the Watchdog Change Enable
+                                 //   (WDCE) flag, which is  needed to set the 
+  WDTCSR = _BV(WDIE);            // Watchdog system reset (WDE) enable and the Watchdog
+                                 //   interrupt enable (WDIE)
   sei();                         // Turn interupts on
 }
 
@@ -69,10 +72,11 @@ uint32_t EntropyClass::random(void)
   return(retVal);
 }
 
-// This function returns one byte of a single 32-bit entropy value, while preserving the remaining bytes to
-// be returned upon successive calls to the method.  This makes best use of the available entropy pool when
-// only bytes size chunks of entropy are needed.  Not available to public use since there is a method of using
-// the default random method for the end-user to achieve the same results.  This internal method is for providing
+// This function returns one byte of a single 32-bit entropy value, while preserving the 
+// remaining bytes to be returned upon successive calls to the method.  This makes best use
+// of the available entropy pool when only bytes size chunks of entropy are needed.  Not
+// available to public use since there is a method of using the default random method for
+// the end-user to achieve the same results.  This internal method is for providing
 // that capability to the random method, shown below
 uint8_t EntropyClass::random8(void)
 {
@@ -86,10 +90,11 @@ uint8_t EntropyClass::random8(void)
   return(retVal8);
 }
 
-// This function returns one word of a single 32-bit entropy value, while preserving the remaining word to
-// be returned upon successive calls to the method.  This makes best use of the available entropy pool when
-// only word sized chunks of entropy are needed.  Not available to public use since there is a method of using
-// the default random method for the end-user to achieve the same results.  This internal method is for providing
+// This function returns one word of a single 32-bit entropy value, while preserving the
+// remaining word to be returned upon successive calls to the method.  This makes best 
+// use of the available entropy pool when only word sized chunks of entropy are needed.
+// Not available to public use since there is a method of using the default random method
+// for the end-user to achieve the same results.  This internal method is for providing
 // that capability to the random method, shown below
 uint16_t EntropyClass::random16(void)
 {
