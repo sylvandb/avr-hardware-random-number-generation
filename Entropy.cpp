@@ -72,6 +72,11 @@ uint32_t EntropyClass::random(void)
   return(retVal);
 }
 
+uint8_t EntropyClass::randomByte(void)
+{
+  return(random8());
+}
+
 // This function returns one byte of a single 32-bit entropy value, while preserving the 
 // remaining bytes to be returned upon successive calls to the method.  This makes best use
 // of the available entropy pool when only bytes size chunks of entropy are needed.  Not
@@ -88,6 +93,11 @@ uint8_t EntropyClass::random8(void)
   retVal8 = share_entropy.int8[byte_position++];
   byte_position = byte_position % 4;
   return(retVal8);
+}
+
+uint16_t EntropyClass::randomWord(void)
+{
+  return(random16());
 }
 
 // This function returns one word of a single 32-bit entropy value, while preserving the
