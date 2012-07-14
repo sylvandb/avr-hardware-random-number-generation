@@ -2,7 +2,7 @@
 //        true random number library
 
 // The die is 7 leds wired as shown below
-// A   B  A=D7, B=D8
+// A   B  A=D0, B=D1
 // C D E  C=D2, D=D3, E=D4
 // F   G  F=D5, G=D6
 
