@@ -1,6 +1,11 @@
 // Entropy - A entropy (random number) generator for the Arduino
+//   The latest version of this library will always be stored in the following
+//   google code repository:
+//     http://code.google.com/p/avr-hardware-random-number-generation/source/browse/#git%2FEntropy
+//   with more information available on the libraries wiki page
+//     http://code.google.com/p/avr-hardware-random-number-generation/wiki/WikiAVRentropy
 //
-// Copyright 2012 by Walter Anderson
+// Copyright 2014 by Walter Anderson
 //
 // This file is part of Entropy, an Arduino library.
 // Entropy is free software: you can redistribute it and/or modify
@@ -18,9 +23,10 @@
 
 #include <Entropy.h>
 #include <util/atomic.h>
+#include <Arduino.h>
 
 const uint8_t gWDT_buffer_SIZE=32;
-const uint8_t WDT_POOL_SIZE=2;
+const uint8_t WDT_POOL_SIZE=8;
 const uint8_t WDT_MAX_8INT=0xFF;
 const uint16_t WDT_MAX_16INT=0xFFFF;
 const uint32_t WDT_MAX_32INT=0xFFFFFFFF;
@@ -49,8 +55,6 @@ void EntropyClass::Initialize(void)
   // WDTCSR |= _BV(WDCE) | _BV(WDE);// WDT control register, This sets the Watchdog Change Enable (WDCE) flag, which is  needed to set the 
   _WD_CONTROL_REG = _BV(WDIE);            // Watchdog system reset (WDE) enable and the Watchdog interrupt enable (WDIE)
   sei();                         // Turn interupts on
-  // The conditional test for cpu type and the addition of the arm code that follows was provided and tested by
-  // Paul Stoffregen on March 18, 2014
 #elif defined(__arm__) && defined(TEENSYDUINO)
   SIM_SCGC5 |= SIM_SCGC5_LPTIMER;
   LPTMR0_CSR = 0b10000100;
@@ -94,7 +98,7 @@ uint8_t EntropyClass::random8(void)
   if (byte_position == 0)
     share_entropy.int32 = random();
   retVal8 = share_entropy.int8[byte_position++];
-  byte_position = byte_position % 4; 
+  byte_position = byte_position % 4;
   return(retVal8);
 }
 
@@ -111,7 +115,7 @@ uint16_t EntropyClass::random16(void)
   if (word_position == 0)
     share_entropy.int32 = random();
   retVal16 = share_entropy.int16[word_position++];
-  word_position = word_position % 2; 
+  word_position = word_position % 2;
   return(retVal16);
 }
 
@@ -127,7 +131,7 @@ uint16_t EntropyClass::random16(void)
 // simpler modulus operation which introduces significant bias for divisors
 // that aren't a power of two
 uint32_t EntropyClass::random(uint32_t max)
-{ 
+{
   uint32_t slice;
 
   if (max < 2)
@@ -153,7 +157,7 @@ uint32_t EntropyClass::random(uint32_t max)
 	  while (retVal >= max)           
 	    retVal = random() / slice;
 	}                                 
-    } 
+    }
   return(retVal);
 }
 
@@ -161,7 +165,7 @@ uint32_t EntropyClass::random(uint32_t max)
 // of [min,max).  
 uint32_t EntropyClass::random(uint32_t min, uint32_t max)
 {
-  uint32_t slice, tmp_random, tmax;
+  uint32_t tmp_random, tmax;
 
   tmax = max - min;
   if (tmax < 2)
@@ -170,8 +174,8 @@ uint32_t EntropyClass::random(uint32_t min, uint32_t max)
     {
       tmp_random = random(tmax);
       retVal = min + tmp_random;
-    } 
-  return(retVal); 
+    }
+  return(retVal);
 }
 
 // This function returns a unsigned char (8-bit) with the number of unsigned long values
@@ -186,17 +190,9 @@ uint8_t EntropyClass::available(void)
 // approximately two 32-bit integer values every second. 
 //
 // The pool is implemented as an 8 value circular buffer
-#if defined( __AVR_ATtiny4313__ )
-ISR(WDT_OVERFLOW_vect)
-#else
-ISR(WDT_vect)
-#endif
+static void isr_hardware_neutral(uint8_t val)
 {
-#if defined( __AVR_ATtiny45__ ) || defined( __AVR_ATtiny85__ )  
-  gWDT_buffer[gWDT_buffer_position] = TCNT0;
-#else
-  gWDT_buffer[gWDT_buffer_position] = TCNT1L; // Record the Timer 1 low byte (only one needed) 
-#endif
+  gWDT_buffer[gWDT_buffer_position] = val;
   gWDT_buffer_position++;                     // every time the WDT interrupt is triggered
   if (gWDT_buffer_position >= gWDT_buffer_SIZE)
   {
@@ -204,7 +200,7 @@ ISR(WDT_vect)
     // The following code is an implementation of Jenkin's one at a time hash
     // This hash function has had preliminary testing to verify that it
     // produces reasonably uniform random results when using WDT jitter
-    // on a variety of Arduino/AVR platforms
+    // on a variety of Arduino platforms
     for(gWDT_loop_counter = 0; gWDT_loop_counter < gWDT_buffer_SIZE; ++gWDT_loop_counter)
       {
 	gWDT_entropy_pool[gWDT_pool_end] += gWDT_buffer[gWDT_loop_counter];
@@ -222,6 +218,29 @@ ISR(WDT_vect)
       ++gWDT_pool_count;
   }
 }
+
+#if defined( __AVR_ATtiny25__ ) || defined( __AVR_ATtiny45__ ) || defined( __AVR_ATtiny85__ )
+ISR(WDT_vect)
+{
+  isr_hardware_neutral(TCNT0);
+}
+
+#elif defined(__AVR__)
+ISR(WDT_vect)
+{
+  isr_hardware_neutral(TCNT1L); // Record the Timer 1 low byte (only one needed) 
+}
+
+#elif defined(__arm__) && defined(TEENSYDUINO)
+void lptmr_isr(void)
+{
+  LPTMR0_CSR = 0b10000100;
+  LPTMR0_CSR = 0b01000101;
+  isr_hardware_neutral(SYST_CVR);
+}
+#endif
+
+
 
 // The library implements a single global instance.  There is no need, nor will the library 
 // work properly if multiple instances are created.

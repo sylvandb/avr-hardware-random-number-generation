@@ -21,7 +21,12 @@
 
 #include <stdint.h>
 #include <avr/interrupt.h>
+//  The watch dog timer header file is not needed for the Teensy 3.1 port
+#ifndef __arm__ 
+#ifndef TEENSYDUINO
 #include <avr/wdt.h>
+#endif
+#endif
 
 const uint32_t WDT_RETURN_BYTE=256;
 const uint32_t WDT_RETURN_WORD=65536;
