@@ -62,6 +62,9 @@ void setup()
   char pw[9];
   
   Serial.begin(115200);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo and Due
+  }
   Entropy.Initialize();
 
   Serial.print("Password: ");

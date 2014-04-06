@@ -21,11 +21,20 @@
 
 #include <Entropy.h>
 
+// The following addresses a problem in version 1.0.5 and earlier of the 
+// Arduino IDE that prevents randomSeed from working properly.
+//   https://github.com/arduino/Arduino/issues/575
+#define randomSeed(s) srandom(s)
+
 void setup()
 {
   uint32_t seed_value;
 
   Serial.begin(115200);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo and Due
+  }
+  Entropy.Initialize();
 
   // This routine sets up the watch dog timer with interrupt handler to maintain a
   // pool of real entropy for use in sketches.  This mechanism is relatively slow
