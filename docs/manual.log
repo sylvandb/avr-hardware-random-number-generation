@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2014.4.15)  24 APR 2014 17:51
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2014.4.15)  25 APR 2014 12:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -217,7 +217,26 @@ LaTeX Font Info:    Font shape `T1/fvm/bx/n' in size <24.88> not available
 (Font)              Font shape `T1/fvm/b/n' tried instead on input line 40.
 LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
 (Font)              scaled to size 22.39185pt on input line 40.
- (./manual.toc)
+ (./manual.toc
+LaTeX Font Info:    Font shape `T1/fvm/bx/n' in size <10> not available
+(Font)              Font shape `T1/fvm/b/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
+(Font)              scaled to size 8.99994pt on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 2.
+
+Overfull \hbox (0.97194pt too wide) detected at line 14
+\T1/fvm/m/n/10 2.10 
+ []
+
+
+Overfull \hbox (0.97194pt too wide) detected at line 15
+\T1/fvm/m/n/10 2.11 
+ []
+
+)
 \tf@toc=\write3
 \openout3 = `manual.toc'.
 
@@ -297,14 +316,6 @@ LaTeX Font Info:    Font shape `T1/fvm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/fvm/b/n' tried instead on input line 54.
 LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
 (Font)              scaled to size 12.9599pt on input line 54.
-LaTeX Font Info:    Font shape `T1/fvm/bx/n' in size <10> not available
-(Font)              Font shape `T1/fvm/b/n' tried instead on input line 57.
-LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
-(Font)              scaled to size 8.99994pt on input line 57.
-
-Package natbib Warning: Citation `Krisston2011' on page 1 undefined on input li
-ne 57.
-
 
 Overfull \hbox (16.60693pt too wide) in paragraph at lines 55--63
 []\T1/fvm/m/n/10 The Arduino currently lacks a means of obtaining true random n
@@ -324,42 +335,34 @@ py source (the unconnected
  []
 
 
-Overfull \hbox (7.02489pt too wide) in paragraph at lines 55--63
-\T1/fvm/m/n/10 analog pin) \T1/fvm/b/n/10 ? \T1/fvm/m/n/10 which is further bia
-sed by methods which introduce additional biases into
+Overfull \hbox (28.6967pt too wide) in paragraph at lines 55--63
+\T1/fvm/m/n/10 analog pin) Kristinsson [2011] which is further biased by method
+s which introduce additional
  []
 
 
-Overfull \hbox (23.27875pt too wide) in paragraph at lines 55--63
-\T1/fvm/m/n/10 the results which it does return. When using the Arduino's pseud
-o-random number generator,
+Overfull \hbox (28.6967pt too wide) in paragraph at lines 55--63
+\T1/fvm/m/n/10 biases into the results which it does return. When using the Ard
+uino's pseudo-random number
  []
 
 
-Overfull \hbox (7.02489pt too wide) in paragraph at lines 55--63
-\T1/fvm/m/n/10 random(), will produce a predictable sequence of numbers unless 
-some random mechanism is
- []
-
-
-Overfull \hbox (12.44284pt too wide) in paragraph at lines 55--63
-\T1/fvm/m/n/10 used to seed it. The manual recommends using the results from an
- unconnected analog pin;
+Overfull \hbox (50.36852pt too wide) in paragraph at lines 55--63
+\T1/fvm/m/n/10 generator, random(), will produce a predictable sequence of numb
+ers unless some random mechanism
  []
 
 
 Overfull \hbox (1.60693pt too wide) in paragraph at lines 55--63
-\T1/fvm/m/n/10 however, there is ample evidence that this mechanism does not in
-troduce much randomness
+\T1/fvm/m/n/10 is used to seed it. The manual recommends using the results from
+ an unconnected analog
  []
 
 
-Package natbib Warning: Citation `Pedersen2006' on page 1 undefined on input li
-ne 66.
-
-
-Package natbib Warning: Citation `Hlavac2010' on page 1 undefined on input line
- 69.
+Overfull \hbox (28.6967pt too wide) in paragraph at lines 55--63
+\T1/fvm/m/n/10 pin; however, there is ample evidence that this mechanism does n
+ot introduce much randomness
+ []
 
 
 Overfull \hbox (22.02489pt too wide) in paragraph at lines 64--70
@@ -374,21 +377,27 @@ Overfull \hbox (1.60693pt too wide) in paragraph at lines 64--70
  []
 
 
-Overfull \hbox (7.02489pt too wide) in paragraph at lines 64--70
-\T1/fvm/m/n/10 and the standard Timer 1. \T1/fvm/b/n/10 ? \T1/fvm/m/n/10 Since 
-this mechanism produces entropy at a relatively slow
+Overfull \hbox (50.36852pt too wide) in paragraph at lines 64--70
+\T1/fvm/m/n/10 and the standard Timer 1. Pedersen [2006] Since this mechanism p
+roduces entropy at a relatively
  []
 
 
-Overfull \hbox (1.60693pt too wide) in paragraph at lines 64--70
-\T1/fvm/m/n/10 rate (approximately 8 bytes per second) its best use is as a see
-d value to the internal
+Overfull \hbox (28.6967pt too wide) in paragraph at lines 64--70
+\T1/fvm/m/n/10 slow rate (approximately 8 bytes per second) its best use is as 
+a seed value to the internal
  []
 
 
 Overfull \hbox (7.02489pt too wide) in paragraph at lines 64--70
 \T1/fvm/m/n/10 pseudo-random number generator or for those demands that do not 
 require large numbers of
+ []
+
+
+Overfull \hbox (28.6967pt too wide) in paragraph at lines 64--70
+\T1/fvm/m/n/10 random numbers, such as generating cryptographically secure pass
+words. Hlavac et al. [2010] 
  []
 
 
@@ -416,14 +425,6 @@ on will meet the user's
  []
 
 
-Package natbib Warning: Citation `ARDWDTRN' on page 1 undefined on input line 8
-0.
-
-
-Package natbib Warning: Citation `Walker2011' on page 1 undefined on input line
- 81.
-
-
 Overfull \hbox (32.8608pt too wide) in paragraph at lines 78--84
 []\T1/fvm/m/n/10 The underlying mechanism that the library uses to generate tru
 e random numbers were tested
@@ -436,21 +437,21 @@ d), and the mega (R3), etc...
  []
 
 
+Overfull \hbox (17.8608pt too wide) in paragraph at lines 78--84
+\T1/fvm/m/n/10 Details of this preliminary testing is available Multiple [2012]
+ which was also the source
+ []
+
+
+Overfull \hbox (39.53261pt too wide) in paragraph at lines 78--84
+\T1/fvm/m/n/10 of the idea for the mechanism used by this library. The early te
+sts performed on this library
+ []
+
+
 Overfull \hbox (12.44284pt too wide) in paragraph at lines 78--84
-\T1/fvm/m/n/10 Details of this preliminary testing is available \T1/fvm/b/n/10 
-? \T1/fvm/m/n/10 which was also the source of the idea
- []
-
-
-Overfull \hbox (1.60693pt too wide) in paragraph at lines 78--84
-\T1/fvm/m/n/10 for the mechanism used by this library. The early tests performe
-d on this library used
- []
-
-
-Overfull \hbox (1.60693pt too wide) in paragraph at lines 78--84
-\T1/fvm/m/n/10 methods published by John Walker. \T1/fvm/b/n/10 ? \T1/fvm/m/n/1
-0 The raw data used in the testing of the mechanism
+\T1/fvm/m/n/10 used methods published by John Walker. Walker [2011] The raw dat
+a used in the testing of
  []
 
 [1
@@ -503,10 +504,6 @@ ds, you need to initialize
  []
 
 
-Package natbib Warning: Citation `Matloff2006' on page 3 undefined on input lin
-e 104.
-
-
 Overfull \hbox (5.77103pt too wide) in paragraph at lines 101--107
 []\T1/fvm/m/n/10 The library only produces uniformly distributed integers (byte
 s, ints, and longs) and
@@ -531,15 +528,15 @@ r consult an appropriate
  []
 
 
-Overfull \hbox (17.8608pt too wide) in paragraph at lines 101--107
-\T1/fvm/m/n/10 reference \T1/fvm/b/n/10 ? \T1/fvm/m/n/10 on generating differen
-t distributions. One of the examples provided with the
+Overfull \hbox (34.11465pt too wide) in paragraph at lines 101--107
+\T1/fvm/m/n/10 reference Matloff [2006] on generating different distributions. 
+One of the examples provided
  []
 
 
-Overfull \hbox (12.44284pt too wide) in paragraph at lines 101--107
-\T1/fvm/m/n/10 library demonstrates how to convert the random long integer retu
-rned by this library into
+Overfull \hbox (34.11465pt too wide) in paragraph at lines 101--107
+\T1/fvm/m/n/10 with the library demonstrates how to convert the random long int
+eger returned by this library
  []
 
 
@@ -860,100 +857,88 @@ Overfull \hbox (34.11465pt too wide) in paragraph at lines 176--183
 32-bit integer in the entropy
  []
 
-[5]
-Overfull \hbox (0.35307pt too wide) in paragraph at lines 186--192
+[5] (./random_minmax_example.ino)
+Overfull \hbox (0.35307pt too wide) in paragraph at lines 188--194
 []\T1/fvm/m/n/10 This method is included to overcome the efficiency problem men
 tioned when attempting
  []
 
 
-Overfull \hbox (7.02489pt too wide) in paragraph at lines 186--192
+Overfull \hbox (7.02489pt too wide) in paragraph at lines 188--194
 \T1/fvm/m/n/10 to retrieve a full byte of entropy using the random(256) method.
  Since that method will
  []
 
 
-Overfull \hbox (12.44284pt too wide) in paragraph at lines 186--192
+Overfull \hbox (12.44284pt too wide) in paragraph at lines 188--194
 \T1/fvm/m/n/10 need to consume two full bytes from the entropy stream to return
  a single byte of entropy
  []
 
 
-Overfull \hbox (12.44284pt too wide) in paragraph at lines 186--192
+Overfull \hbox (12.44284pt too wide) in paragraph at lines 188--194
 \T1/fvm/m/n/10 this method was included for the special case, where a single co
 mplete byte of entropy is
  []
 
 
-Overfull \hbox (34.11465pt too wide) in paragraph at lines 186--192
+Overfull \hbox (34.11465pt too wide) in paragraph at lines 188--194
 \T1/fvm/m/n/10 needed at a time. This allows four such bytes to be returned fro
 m each entropy value, rather
  []
 
 
-Overfull \hbox (7.02489pt too wide) in paragraph at lines 186--192
+Overfull \hbox (7.02489pt too wide) in paragraph at lines 188--194
 \T1/fvm/m/n/10 than two. In all other ways it behaves in a manner consistent wi
 th the random() method. 
  []
 
 
-Overfull \hbox (0.35307pt too wide) in paragraph at lines 195--200
+Overfull \hbox (0.35307pt too wide) in paragraph at lines 197--202
 []\T1/fvm/m/n/10 This method is included to overcome the efficiency problem men
 tioned when attempting
  []
 
 
-Overfull \hbox (17.8608pt too wide) in paragraph at lines 195--200
+Overfull \hbox (17.8608pt too wide) in paragraph at lines 197--202
 \T1/fvm/m/n/10 to retrieve a full word (16-bit integer) of entropy using the ra
 ndom(65536) method. Since
  []
 
 
-Overfull \hbox (34.11465pt too wide) in paragraph at lines 195--200
+Overfull \hbox (34.11465pt too wide) in paragraph at lines 197--202
 \T1/fvm/m/n/10 that method will need to consume four bytes from the entropy str
 eam to return only two bytes,
  []
 
 
-Overfull \hbox (28.6967pt too wide) in paragraph at lines 195--200
+Overfull \hbox (28.6967pt too wide) in paragraph at lines 197--202
 \T1/fvm/m/n/10 this method was included for the special case where a single int
 eger is needed. This allows
  []
 
 
-Overfull \hbox (1.60693pt too wide) in paragraph at lines 195--200
+Overfull \hbox (1.60693pt too wide) in paragraph at lines 197--202
 \T1/fvm/m/n/10 two such integers to be returned from each entropy value, rather
  than only one. In all
  []
 
-(./random_minmax_example.ino)
-Overfull \hbox (5.77103pt too wide) in paragraph at lines 205--207
-[]\T1/fvm/m/n/10 This method, which is only available if the library is configu
-red to use the floating
+
+Overfull \hbox (22.02489pt too wide) in paragraph at lines 210--211
+[]\T1/fvm/m/n/10 This method will produce a uniformly distributed random float 
+in the range of [0 - max). 
  []
 
 
-Overfull \hbox (22.02489pt too wide) in paragraph at lines 210--212
-[]\T1/fvm/m/n/10 This method, which is only available if the library is configu
-red to use floating point,
+Overfull \hbox (0.35307pt too wide) in paragraph at lines 214--215
+[]\T1/fvm/m/n/10 This method will produce a uniformly distributed random float 
+in the range of [min -
  []
 
-
-Overfull \hbox (22.02489pt too wide) in paragraph at lines 215--217
-[]\T1/fvm/m/n/10 This method, which is only available if the library is configu
-red to use floating point,
- []
-
-[6]
-Overfull \hbox (22.02489pt too wide) in paragraph at lines 220--223
-[]\T1/fvm/m/n/10 This method, which is only available if the library is configu
-red to use floating point,
- []
-
-
-Overfull \hbox (12.44284pt too wide) in paragraph at lines 220--223
-\T1/fvm/m/n/10 will produce a gaussian distributed (normal, bell curve) random 
-number with the specified
+[6] (./randomf_example.ino)
+Overfull \hbox (11.18898pt too wide) in paragraph at lines 220--222
+[]\T1/fvm/m/n/10 This method will produce a gaussian distributed (normal, bell 
+curve) random float with
  []
 
 [7]
@@ -1014,10 +999,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 9--13
  Conference on Computer Engineering
  []
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 20.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 20.
 
 Underfull \hbox (badness 10000) in paragraph at lines 15--21
 []\T1/fvm/m/n/10 Benedikt Kristinsson.  Ardrand: The arduino as a hardware rand
@@ -1048,25 +1029,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--38
 ions in avr -
  []
 
-)
+) [26
 
-Package natbib Warning: There were undefined citations.
-
-[26
-
-] (./manual.aux
-
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
-
-) ) 
+] (./manual.aux) ) 
 Here is how much of TeX's memory you used:
- 4830 strings out of 493308
- 62436 string characters out of 6139931
+ 4835 strings out of 493308
+ 62521 string characters out of 6139931
  206643 words of memory out of 5000000
- 8243 multiletter control sequences out of 15000+600000
+ 8245 multiletter control sequences out of 15000+600000
  12309 words of font info for 40 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  33i,6n,58p,225b,1486s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on manual.dvi (28 pages, 200788 bytes).
+Output written on manual.dvi (28 pages, 208292 bytes).

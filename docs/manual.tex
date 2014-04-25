@@ -181,6 +181,8 @@ into four byte sized integers. Consequently four byte sized values are returned 
 the entropy pool.  In a similar way, value differences less than 65536 but greater than or equal to 256 will 
 return two 16-bit integer values for every 32-bit integer in the entropy pool. 
 
+\code{random(min,max) Example}{random_minmax_example.ino}
+
 \section{randomByte()} 
 
 This method is included to overcome the efficiency problem mentioned when attempting to retrieve a full byte 
@@ -198,28 +200,25 @@ from the entropy stream to return only two bytes, this method was included for t
 integer is needed.  This allows two such integers to be returned from each entropy value, rather than only 
 one.  In all other ways it behaves in a manner consistent with the random() method.
 
-\code{random(min,max) Example}{random_minmax_example.ino}
 
 \section{randomf()}
 
-This method, which is only available if the library is configured to use the floating point, will produce 
-uniformly distributed random numbers in the range of [0-1).
+This method will produce uniformly distributed random float in the range of [0-1).
 
 \section{randomf(max)}
 
-This method, which is only available if the library is configured to use floating point, will produce a uniformly 
-distributed random number in the range of [0 - max).
+This method will produce a uniformly distributed random float in the range of [0 - max).
 
 \section{randomf(min, max)}
 
-This method, which is only available if the library is configured to use floating point, will produce a uniformly 
-distributed random number in the range of [min - max).
+This method will produce a uniformly distributed random float in the range of [min - max).
+
+\code{randomf(...) Example}{randomf_example.ino}
 
 \section{rnorm(mean, stdDev)}
 
-This method, which is only available if the library is configured to use floating point, will produce a gaussian 
-distributed (normal, bell curve) random number with the specified mean that will collective exhbit the characteristic
-standard deviation.
+This method will produce a gaussian distributed (normal, bell curve) random float with the specified mean that will 
+collective exhbit the characteristic standard deviation.
 
 \chapter{Library Source}
 
