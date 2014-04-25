@@ -1,6 +1,6 @@
 // Entropy - A entropy (random number) generator for the Arduino
 //
-// Copyright 2012 by Walter Anderson
+// Copyright 2014 by Walter Anderson
 //
 // This file is part of Entropy, an Arduino library.
 // Entropy is free software: you can redistribute it and/or modify
@@ -20,10 +20,18 @@
 #define Entropy_h
 
 #include <stdint.h>
+
+// Separate the ARM Due headers we use
+#ifdef ARDUINO_SAM_DUE
+#include <sam.h>
+#include <sam3xa/include/component/component_trng.h>
+#endif
+
+//  Separate AVR headers from ARM headers
+#ifdef __AVR__  
 #include <avr/interrupt.h>
-//  The watch dog timer header file is not needed for the Teensy 3.1 port
-#ifdef __AVR__
 #include <avr/wdt.h>
+#include <util/atomic.h>
 #endif
 
 const uint32_t WDT_RETURN_BYTE=256;
@@ -45,6 +53,10 @@ public:
   uint32_t random(uint32_t min, uint32_t max);
   uint8_t randomByte(void);
   uint16_t randomWord(void);
+  float randomf(void);
+  float randomf(float max);
+  float randomf(float min, float max);
+  float rnorm(float mean, float stdDev);
   uint8_t available(void);
  private:
   ENTROPY_LONG_WORD share_entropy;

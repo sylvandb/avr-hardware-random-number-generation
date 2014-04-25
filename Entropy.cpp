@@ -21,22 +21,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Entropy.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Entropy.h>
-#include <util/atomic.h>
 #include <Arduino.h>
+#include <Entropy.h>
 
-const uint8_t gWDT_buffer_SIZE=32;
-const uint8_t WDT_POOL_SIZE=8;
 const uint8_t WDT_MAX_8INT=0xFF;
 const uint16_t WDT_MAX_16INT=0xFFFF;
 const uint32_t WDT_MAX_32INT=0xFFFFFFFF;
-uint8_t gWDT_buffer[gWDT_buffer_SIZE];
-uint8_t gWDT_buffer_position;
-uint8_t gWDT_loop_counter;
-volatile uint8_t gWDT_pool_start;
-volatile uint8_t gWDT_pool_end;
-volatile uint8_t gWDT_pool_count;
-volatile uint32_t gWDT_entropy_pool[WDT_POOL_SIZE];
+// Since the Due TRNG is so fast we don't need a circular buffer for it
+#ifndef ARDUINO_SAM_DUE
+ const uint8_t gWDT_buffer_SIZE=32;
+ const uint8_t WDT_POOL_SIZE=8;
+ uint8_t gWDT_buffer[gWDT_buffer_SIZE];
+ uint8_t gWDT_buffer_position;
+ uint8_t gWDT_loop_counter;
+ volatile uint8_t gWDT_pool_start;
+ volatile uint8_t gWDT_pool_end;
+ volatile uint8_t gWDT_pool_count;
+ volatile uint32_t gWDT_entropy_pool[WDT_POOL_SIZE];
+#endif
 
 // This function initializes the global variables needed to implement the circular entropy pool and
 // the buffer that holds the raw Timer 1 values that are used to create the entropy pool.  It then
@@ -44,10 +46,12 @@ volatile uint32_t gWDT_entropy_pool[WDT_POOL_SIZE];
 // 16 ms) which is as fast as it can be set.
 void EntropyClass::Initialize(void)
 {
+#ifndef ARDUINO_SAM_DUE
   gWDT_buffer_position=0;
   gWDT_pool_start = 0;
   gWDT_pool_end = 0;
   gWDT_pool_count = 0;
+#endif
 #if defined(__AVR__)
   cli();                         // Temporarily turn off interrupts, until WDT configured
   MCUSR = 0;                     // Use the MCU status register to reset flags for WDR, BOR, EXTR, and POWR
@@ -55,6 +59,10 @@ void EntropyClass::Initialize(void)
   // WDTCSR |= _BV(WDCE) | _BV(WDE);// WDT control register, This sets the Watchdog Change Enable (WDCE) flag, which is  needed to set the 
   _WD_CONTROL_REG = _BV(WDIE);            // Watchdog system reset (WDE) enable and the Watchdog interrupt enable (WDIE)
   sei();                         // Turn interupts on
+#elif defined(ARDUINO_SAM_DUE)
+  pmc_enable_periph_clk(ID_TRNG);
+  TRNG->TRNG_IDR = 0xFFFFFFFF;
+  TRNG->TRNG_CR = TRNG_CR_KEY(0x524e47) | TRNG_CR_ENABLE;
 #elif defined(__arm__) && defined(TEENSYDUINO)
   SIM_SCGC5 |= SIM_SCGC5_LPTIMER;
   LPTMR0_CSR = 0b10000100;
@@ -73,6 +81,11 @@ void EntropyClass::Initialize(void)
 // The pool is implemented as an 8 value circular buffer
 uint32_t EntropyClass::random(void)
 {
+#ifdef ARDUINO_SAM_DUE
+  while (! (TRNG->TRNG_ISR & TRNG_ISR_DATRDY))
+    ;
+  retVal = TRNG->TRNG_ODATA;
+#else
   uint8_t waiting;
   while (gWDT_pool_count < 1)
     waiting += 1;
@@ -82,6 +95,7 @@ uint32_t EntropyClass::random(void)
     gWDT_pool_start = (gWDT_pool_start + 1) % WDT_POOL_SIZE;
     --gWDT_pool_count;
   }
+#endif
   return(retVal);
 }
 
@@ -168,8 +182,8 @@ uint32_t EntropyClass::random(uint32_t min, uint32_t max)
   uint32_t tmp_random, tmax;
 
   tmax = max - min;
-  if (tmax < 2)
-    retVal=0;
+  if (tmax < 1)
+    retVal=min;
   else
     {
       tmp_random = random(tmax);
@@ -178,13 +192,87 @@ uint32_t EntropyClass::random(uint32_t min, uint32_t max)
   return(retVal);
 }
 
+// This function returns a uniformly distributed single precision floating point
+// in the range of [0.0,1.0)
+float EntropyClass::randomf(void)
+{
+  float fRetVal;
+
+  // Since c++ doesn't allow bit manipulations of floating point types, we are
+  // using integer type and arrange its bit pattern to follow the IEEE754 bit
+  // pattern for single precision floating point value in the range of 1.0 - 2.0
+  uint32_t tmp_random = random();
+  tmp_random = (tmp_random & 0x007FFFFF) | 0x3F800000;  
+  // We then copy that binary representation from the temporary integer to the
+  // returned floating point value
+  memcpy((void *) &fRetVal, (void *) &tmp_random, sizeof(fRetVal));
+  // Now translate the value back to its intended range by subtracting 1.0
+  fRetVal = fRetVal - 1.0;
+  return (fRetVal);
+}
+
+// This function returns a uniformly distributed single precision floating point
+// in the range of [0.0, max)
+float EntropyClass::randomf(float max)
+{
+  float fRetVal;
+  fRetVal = randomf() * max;
+  return(fRetVal);
+}
+
+// This function returns a uniformly distributed single precision floating point
+// in the range of [min, max)
+float EntropyClass::randomf(float min,float max)
+{
+  float fRetVal;
+  float tmax;
+  tmax = max - min;
+  fRetVal = (randomf() * tmax) + min;
+  return(fRetVal);
+}
+
+// This function implements the Marsaglia polar method of converting a uniformly 
+// distributed random numbers to a normaly distributed (bell curve) with the 
+// mean and standard deviation specified.  This type of random number is useful
+// for a variety of purposes, like Monte Carlo simulations.
+float EntropyClass::rnorm(float mean, float stdDev)
+{
+  static float spare;
+  static float u1;
+  static float u2;
+  static float s;
+  static bool isSpareReady = false;
+
+  if (isSpareReady)
+  { 
+    isSpareReady = false;
+    return ((spare * stdDev) + mean);
+  } else {
+    do {
+      u1 = (randomf() * 2) - 1;
+      u2 = (randomf() * 2) - 1;
+      s = (u1 * u1) + (u2 * u2);
+    } while (s >= 1.0);
+    s = sqrt(-2.0 * log(s) / s);
+    spare = u2 * s;
+    isSpareReady = true;
+    return(mean + (stdDev * u1 * s));
+  }
+}
+
 // This function returns a unsigned char (8-bit) with the number of unsigned long values
 // in the entropy pool
 uint8_t EntropyClass::available(void)
 {
+#ifdef ARDUINO_SAM_DUE
+  return(TRNG->TRNG_ISR & TRNG_ISR_DATRDY);
+#else
   return(gWDT_pool_count);
+#endif
 }
 
+// Circular buffer is not needed with the speed of the Arduino Due trng hardware generator
+#ifndef ARDUINO_SAM_DUE
 // This interrupt service routine is called every time the WDT interrupt is triggered.
 // With the default configuration that is approximately once every 16ms, producing 
 // approximately two 32-bit integer values every second. 
@@ -218,6 +306,7 @@ static void isr_hardware_neutral(uint8_t val)
       ++gWDT_pool_count;
   }
 }
+#endif
 
 #if defined( __AVR_ATtiny25__ ) || defined( __AVR_ATtiny45__ ) || defined( __AVR_ATtiny85__ )
 ISR(WDT_vect)
@@ -239,8 +328,6 @@ void lptmr_isr(void)
   isr_hardware_neutral(SYST_CVR);
 }
 #endif
-
-
 
 // The library implements a single global instance.  There is no need, nor will the library 
 // work properly if multiple instances are created.
