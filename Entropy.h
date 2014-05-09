@@ -27,6 +27,11 @@
 #include <sam3xa/include/component/component_trng.h>
 #endif
 
+// Teensy required headers
+#ifdef TEENSYDUINO
+#include <util/atomic.h>
+#endif
+
 //  Separate AVR headers from ARM headers
 #ifdef __AVR__  
 #include <avr/interrupt.h>
