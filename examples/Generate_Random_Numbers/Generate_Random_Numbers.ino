@@ -27,17 +27,16 @@ void setup()
   uint32_t random_long;
   float random_float;
   
-  Serial.begin(115200);
+  Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo and Due
   }
-  Entropy.Initialize();
 
   // This routine sets up the watch dog timer with interrupt handler to maintain a
   // pool of real entropy for use in sketches.  This mechanism is relatively slow
   // since it will only produce a little less than two 32-bit random values per 
   // second.
-  Entropy.Initialize();
+  Entropy.initialize();
 
   // Simulate a coin flip
   random_byte = Entropy.random(2); // return a 0 or a 1

@@ -44,7 +44,7 @@ const uint32_t WDT_MAX_32INT=0xFFFFFFFF;
 // the buffer that holds the raw Timer 1 values that are used to create the entropy pool.  It then
 // Initializes the Watch Dog Timer (WDT) to perform an interrupt every 2048 clock cycles, (about 
 // 16 ms) which is as fast as it can be set.
-void EntropyClass::Initialize(void)
+void EntropyClass::initialize(void)
 {
 #ifndef ARDUINO_SAM_DUE
   gWDT_buffer_position=0;
@@ -131,6 +131,16 @@ uint16_t EntropyClass::random16(void)
   retVal16 = share_entropy.int16[word_position++];
   word_position = word_position % 2;
   return(retVal16);
+}
+
+uint8_t EntropyClass::randomByte(void)
+{
+  return random8();
+}
+
+uint16_t EntropyClass::randomWord(void)
+{
+  return random16();
 }
 
 // This function returns a uniformly distributed integer in the range of 

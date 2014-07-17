@@ -61,11 +61,11 @@ void setup()
 {
   char pw[9];
   
-  Serial.begin(115200);
+  Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo and Due
   }
-  Entropy.Initialize();
+  Entropy.initialize();
 
   Serial.print("Password: ");
   Serial.println(getPassword(pw));
